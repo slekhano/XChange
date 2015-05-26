@@ -57,8 +57,8 @@ public interface OkCoin {
   OkCoinTrade[] getTrades(@QueryParam("ok") String ok, @QueryParam("symbol") String symbol, @QueryParam("since") long since) throws IOException;
 
   @GET
-  @Path("future_trades.do")
-  OkCoinTrade[] getFuturesTrades(@QueryParam("ok") String ok, @QueryParam("symbol") String symbol, @QueryParam("contract_type") String contract,
+  @Path("future_trades_history.do")
+  OkCoinTrade[] getFuturesTradesHistory(@QueryParam("ok") String ok, @QueryParam("symbol") String symbol, @QueryParam("date") String contractDate,
       @QueryParam("since") long since) throws IOException;
 
   @POST

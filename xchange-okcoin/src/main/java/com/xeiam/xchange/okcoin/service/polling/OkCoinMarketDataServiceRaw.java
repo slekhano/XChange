@@ -2,13 +2,11 @@ package com.xeiam.xchange.okcoin.service.polling;
 
 import java.io.IOException;
 
+import com.xeiam.xchange.okcoin.*;
 import si.mazi.rescu.RestProxyFactory;
 
 import com.xeiam.xchange.Exchange;
 import com.xeiam.xchange.currency.CurrencyPair;
-import com.xeiam.xchange.okcoin.FuturesContract;
-import com.xeiam.xchange.okcoin.OkCoin;
-import com.xeiam.xchange.okcoin.OkCoinAdapters;
 import com.xeiam.xchange.okcoin.dto.marketdata.OkCoinDepth;
 import com.xeiam.xchange.okcoin.dto.marketdata.OkCoinTickerResponse;
 import com.xeiam.xchange.okcoin.dto.marketdata.OkCoinTrade;
@@ -62,6 +60,11 @@ public class OkCoinMarketDataServiceRaw extends OkCoinBasePollingService {
   public OkCoinTrade[] getFuturesTrades(CurrencyPair currencyPair, FuturesContract prompt) throws IOException {
 
     return okCoin.getFuturesTrades("1", OkCoinAdapters.adaptSymbol(currencyPair), prompt.getName().toLowerCase());
+  }
+
+  public OkCoinTrade[] getFuturesTradesHistory(CurrencyPair currencyPair, FuturesDate futuresDate, SinceArg since) throws IOException {
+
+    return okCoin.getFuturesTradesHistory("1", OkCoinAdapters.adaptSymbol(currencyPair), futuresDate.formatDate(), since.value);
   }
 
 }

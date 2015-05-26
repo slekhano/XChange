@@ -86,12 +86,11 @@ public final class OkCoinAdapters {
   public static Trades adaptTrades(OkCoinTrade[] trades, CurrencyPair currencyPair) {
 
     List<Trade> tradeList = new ArrayList<Trade>(trades.length);
-    for (int i = 0; i < trades.length; i++) {
-      OkCoinTrade trade = trades[i];
+    for (OkCoinTrade trade : trades) {
       tradeList.add(adaptTrade(trade, currencyPair));
     }
     long lastTid = trades.length > 0 ? (trades[trades.length - 1].getTid()) : 0L;
-    return new Trades(tradeList, lastTid, TradeSortType.SortByTimestamp);
+    return new Trades(tradeList, lastTid, TradeSortType.SortByID);
   }
 
   public static AccountInfo adaptAccountInfo(OkCoinUserInfo userInfo) {

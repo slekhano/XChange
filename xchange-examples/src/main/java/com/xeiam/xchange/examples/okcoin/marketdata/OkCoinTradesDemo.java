@@ -3,6 +3,7 @@ package com.xeiam.xchange.examples.okcoin.marketdata;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import com.xeiam.xchange.Exchange;
 import com.xeiam.xchange.ExchangeFactory;
@@ -13,9 +14,7 @@ import com.xeiam.xchange.dto.account.AccountInfo;
 import com.xeiam.xchange.dto.marketdata.Trades;
 import com.xeiam.xchange.dto.trade.LimitOrder;
 import com.xeiam.xchange.dto.trade.OpenOrders;
-import com.xeiam.xchange.okcoin.FuturesContract;
-import com.xeiam.xchange.okcoin.OkCoinAdapters;
-import com.xeiam.xchange.okcoin.OkCoinExchange;
+import com.xeiam.xchange.okcoin.*;
 import com.xeiam.xchange.okcoin.dto.marketdata.OkCoinTrade;
 import com.xeiam.xchange.okcoin.dto.trade.OkCoinPosition;
 import com.xeiam.xchange.okcoin.dto.trade.OkCoinPositionResult;
@@ -34,14 +33,29 @@ public class OkCoinTradesDemo {
 
 		// flag to set Use_Intl (USD) or China (default)
 		exSpec.setExchangeSpecificParametersItem("Use_Intl", true);
-		exSpec.setExchangeSpecificParametersItem("Use_Futures", false);
+		exSpec.setExchangeSpecificParametersItem("Use_Futures", true);
 		exSpec.setExchangeSpecificParametersItem("Futures_Contract", FuturesContract.ThisWeek);
 		Exchange okcoinExchange = ExchangeFactory.INSTANCE.createExchange(exSpec);
 
-		//		futures(okcoinExchange);
+		/*
+		futures(okcoinExchange);
+		*/
+		trades(okcoinExchange);
 
+		/*
 		generic(okcoinExchange);
 		raw(okcoinExchange);
+		*/
+	}
+
+	private static void trades(Exchange exchange) throws IOException {
+		final PollingMarketDataService marketDataService = exchange.getPollingMarketDataService();
+		final FuturesDate futuresDate = new FuturesDate(new Date(Date.UTC(2014 - 1900, 10 - 1, 31, 8, 0, 0)));
+		final SinceArg sinceArg = new SinceArg(0);
+		final CurrencyPair pair = CurrencyPair.BTC_USD;
+
+		final Trades trades = marketDataService.getTrades(pair, futuresDate, sinceArg);
+		System.out.println(trades.toString());
 	}
 
 	private static void futures(Exchange okcoinExchange) throws IOException {
@@ -58,8 +72,8 @@ public class OkCoinTradesDemo {
 		OkCoinPositionResult futuresPosition = pollingTradeService.getFuturesPosition(OkCoinAdapters.adaptSymbol(CurrencyPair.BTC_USD), FuturesContract.ThisWeek);
 		OkCoinPosition[] positions = futuresPosition.getPositions();
 
-		for (int i = 0; i < positions.length; i++) {
-			System.out.println(positions[i].getContractId());
+		for (OkCoinPosition position : positions) {
+			System.out.println(position.getContractId());
 		}
 
 		String placeLimitOrder = pollingTradeService.placeLimitOrder(new LimitOrder(OrderType.BID, new BigDecimal("1"), CurrencyPair.BTC_USD, "0", new Date(), new BigDecimal("200")));
@@ -99,8 +113,7 @@ public class OkCoinTradesDemo {
 
 		// Poll for any new trades since last id
 		trades = okCoinMarketDataServiceRaw.getTrades(CurrencyPair.BTC_CNY, trades[trades.length - 1].getTid() - 10);
-		for (int i = 0; i < trades.length; i++) {
-			OkCoinTrade okCoinTrade = trades[i];
+		for (OkCoinTrade okCoinTrade : trades) {
 			System.out.println(okCoinTrade.toString());
 		}
 		System.out.println("Trades size: " + trades.length);
