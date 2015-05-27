@@ -3,7 +3,6 @@ package com.xeiam.xchange.okcoin.service.polling;
 import java.io.IOException;
 import java.util.concurrent.Future;
 
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import com.xeiam.xchange.Exchange;
 import com.xeiam.xchange.currency.CurrencyPair;
 import com.xeiam.xchange.dto.marketdata.OrderBook;

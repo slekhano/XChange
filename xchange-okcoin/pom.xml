@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>com.xeiam.xchange</groupId>
+		<groupId>nu.mine.castor23</groupId>
 		<artifactId>xchange-parent</artifactId>
 		<version>3.0.1-SNAPSHOT</version>
 	</parent>
