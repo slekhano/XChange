@@ -1,11 +1,11 @@
 package com.xeiam.xchange.okcoin.dto.marketdata;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-public class OkCoinTrade {
+public class OkCoinFutureTrade {
 
   private final Date date;
   private final BigDecimal price;
@@ -22,15 +22,10 @@ public class OkCoinTrade {
    * @param tid
    * @param type
    */
-  public OkCoinTrade(
-          @JsonProperty("date") final long date
-        , @JsonProperty("date_ms") final long date_ms
-        , @JsonProperty("price") final BigDecimal price
-        , @JsonProperty("amount") final BigDecimal amount
-        , @JsonProperty("tid") final long tid
-        , @JsonProperty("type") final String type)
-  {
-    this.date = new Date(date_ms > 0 ? date_ms : date);
+  public OkCoinFutureTrade(@JsonProperty("date") final long date, @JsonProperty("price") final BigDecimal price,
+                           @JsonProperty("amount") final BigDecimal amount, @JsonProperty("tid") final long tid, @JsonProperty("type") final String type) {
+
+    this.date = new Date(date);
     this.price = price;
     this.amount = amount;
     this.tid = tid;
@@ -64,7 +59,8 @@ public class OkCoinTrade {
 
   @Override
   public String toString() {
-    return "OkCoinTrade [date=" + date + ", price=" + price + ", amount=" + amount + ", tid=" + tid + ", type=" + type + "]";
+
+    return "OkCoinFutureTrade [date=" + date + ", price=" + price + ", amount=" + amount + ", tid=" + tid + ", type=" + type + "]";
   }
 
 }
